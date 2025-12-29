@@ -2,7 +2,7 @@
 
 import yfinance as yf
 from core.schema import SensorSignal
-
+from core.config import STOCK_ALERT_THRESHOLD
 
 def run_stock_sensor(ticker: str = "AAPL") -> SensorSignal:
     """
@@ -33,12 +33,12 @@ def run_stock_sensor(ticker: str = "AAPL") -> SensorSignal:
 
         # 4. Считаем процент изменения
         change_percent = round(
-            ((last_price - prev_close) / prev_close) * 100,
-            2
+            ((last_price - prev_close) / prev_close) * 100,2
+           
         )
 
         # 5. Определяем статус
-        if abs(change_percent) >= 5:
+        if abs(change_percent) >= STOCK_ALERT_THRESHOLD:
             status = "warning"
             message = f"Сильное движение {ticker}: {change_percent}%"
         else:

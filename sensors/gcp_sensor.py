@@ -3,7 +3,7 @@
 import time
 import httpx
 from core.schema import SensorSignal
-
+from core.config import GCP_LATENCY_WARNING_MS
 
 def run_gcp_sensor(url: str = "https://www.google.com") -> SensorSignal:
     """
@@ -17,7 +17,7 @@ def run_gcp_sensor(url: str = "https://www.google.com") -> SensorSignal:
         latency_ms = round((time.perf_counter() - start_time) * 1000, 2)
 
         if response.status_code == 200:
-            status = "ok" if latency_ms < 1000 else "warning"
+            status = "ok" if latency_ms < GCP_LATENCY_WARNING_MS else "warning"
             message = f"Сервис доступен ({latency_ms} ms)"
         else:
             status = "warning"
